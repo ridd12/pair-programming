@@ -17,6 +17,12 @@ const messageTemplate=document.querySelector('#message-template').innerHTML
 const locationTemplate=document.querySelector('#location-template').innerHTML
 
 
+//for cursor
+const $cursorDiv=document.querySelector('#c')
+const cursorTemplate=document.querySelector('#cursor-template').innerHTML
+
+
+
 //for sidebars
 const sidebarTemplate=document.querySelector('#sidebar-template').innerHTML
 
@@ -73,6 +79,66 @@ const autoscroll=()=>{
 }
 
 
+// const $messageFormInput=document.querySelector('#box')
+// const $messageFormInput=$messageForm.querySelector('input')
+
+
+socket.on('make_cursor_div',(username)=>{
+  // console.log(message)
+  var html = Mustache.render(cursorTemplate,{
+    //this is done using a mustache library the {{dynamic}} part if changed to the second argument that is also message which is the above one consoleloggedone!
+    userid:username
+  })
+  // html.setAttribute("id", username)
+  // html.id = username;
+  $cursorDiv.insertAdjacentHTML('beforeend',html)
+  const $cursorFormInput=document.querySelector('#c')
+  
+  if ($cursorFormInput.querySelector('#changer').id){
+    $cursorFormInput.querySelector('#changer').id=username
+    // console.log("fs")
+  }
+  else{
+    // console.log("fsssss")
+  }
+  
+  // autoscroll()
+})
+
+socket.on('make_cursor_overselves',(username,aa)=>{
+  console.log(aa)
+
+  aa.forEach(user_name => {
+    if (user_name.username != username) {
+      
+    
+
+  var html = Mustache.render(cursorTemplate,{
+    //this is done using a mustache library the {{dynamic}} part if changed to the second argument that is also message which is the above one consoleloggedone!
+    userid:user_name.username
+  })
+  // html.setAttribute("id", username)
+  // html.id = username;
+  $cursorDiv.insertAdjacentHTML('beforeend',html)
+  const $cursorFormInput=document.querySelector('#c')
+  
+  if ($cursorFormInput.querySelector('#changer').id){
+    $cursorFormInput.querySelector('#changer').id=user_name.username
+    // console.log("fs")
+  }
+  else{
+    // console.log("fsssss")
+  }
+  }
+  });
+
+
+
+  
+
+})
+
+
 socket.on('message',(message)=>{
   // console.log(message)
   const html = Mustache.render(messageTemplate,{
@@ -110,9 +176,21 @@ socket.on('mes',(message)=>{
 
   // })
   // $messageDiv.insertAdjacentHTML('beforeend',html)
-  autoscroll()
+  // autoscroll()
 })
 
+socket.on('cur',(username_,x,y)=>{
+  // console.log(x)
+  // console.log(y)
+  // autoscroll()
+
+  var $cursorFormInput=document.querySelector('#c')
+  var var_name="#"+username_
+  // console.log(var_name)
+  var d=$cursorFormInput.querySelector(var_name)
+  d.style.left = x+'px'
+  d.style.top = y+'px'
+})
 
 socket.on('roomData',({room,users})=>{
     const html=Mustache.render(sidebarTemplate,{
@@ -177,6 +255,15 @@ socket.on('location-message',(message)=>{
 //   })
 
 // })
+document.addEventListener('mousemove',(e)=>{
+  var x = e.clientX;
+  var y = e.clientY;
+  socket.emit('cursor',username,room,x,y,()=>{
+    // console.log('location was shared!')
+    console.log("current location of currsor is shared")
+  })
+})
+
 
 document.querySelector('#box').addEventListener('change',(e)=>{
   console.log("riddhish")
@@ -193,11 +280,12 @@ document.querySelector('#box').addEventListener('keydown',(e)=>{
   }else if(e.key=='ArrowLeft'){
     console.log("a")
     addAt-=1
-    setCaretPosition(document.getElementById("box"), addAt+1);
+    setCaretPosition(document.getElementById("box"), addAt);
     return 
   }else if(e.key=='ArrowRight'){
+    console.log("b")
     addAt+=1
-    setCaretPosition(document.getElementById("box"), addAt+1);
+    setCaretPosition(document.getElementById("box"), addAt);
     return 
   }
   else{
@@ -252,7 +340,7 @@ document.querySelector('#send-location').addEventListener('click',()=>{
       console.log("here's your output")
     })
   })
-  
+
   // GeolocationPosition {coords: GeolocationCoordinates, timestamp: 1622034918721}
   // coords: GeolocationCoordinates
   // accuracy: 215611

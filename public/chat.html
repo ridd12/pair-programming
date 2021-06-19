@@ -8,13 +8,17 @@
   </head>
   <body>
     <div class="chat">
+      <div id="c" >
+      </div>
       <div id="sidebar" class="chat__sidebar">
-
       </div>
       <div class="chat__main">
         <textarea id="box" name="w3review" rows="30" cols="50"></textarea>
         <div class="compose">
           <button id="send-location" name="button">run:</button>
+          <form action="/practice.html">
+            <button>practice:</button>
+          </form>
         </div>
         <div id="messages" class="chat__messages"></div>
       </div>
@@ -48,6 +52,10 @@
               <li>{{username}}</li>
           {{/users}}
         </ul>
+
+    </script>
+    <script id="cursor-template" type="text/html">
+      <div class="cursor" id="changer" ><p>{{userid}}</p></div>
     </script>
     <!-- <script>
       function goBack() {

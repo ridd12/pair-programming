@@ -14,6 +14,15 @@ input {
     font-size: 14px;
 }
 
+.cursor {
+    position: absolute;
+    background: black;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+  }
+
+
 body {
     line-height: 1.4;
     color: #333333;

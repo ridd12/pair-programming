@@ -19,15 +19,35 @@ const port = process.env.PORT || 3000
 const publicDirectoryPath=path.join(__dirname,'../public')
 
 
-var cursorData = []; 
+var cursorData = [];
 
+app.set('view engine', 'ejs')
 
 app.use(express.static(publicDirectoryPath))
+
+app.get('/', (req, res) => {
+  res.render('index')
+})
+
+
+app.get('/:room', (req, res) => {
+  res.render('room', { roomId: req.params.room })
+})
 
 
 io.on('connection',(socket)=>{
   console.log('New web socket connection')
-
+//this part is script for video call|-
+  socket.on('join-room', (roomId, userId) => {
+    socket.join(roomId)
+    console.log("fdfef1")
+    socket.to(roomId).emit('user-connected', userId)
+    console.log("fdfef2")
+    socket.on('disconnect', () => {
+      socket.to(roomId).emit('user-disconnected', userId)
+    })
+  })
+//this part is script for video call|^
   socket.on('join',({username,room},callback)=>{
     const {error,user}=addUser({id:socket.id,username,room})
 
@@ -44,6 +64,10 @@ io.on('connection',(socket)=>{
     // // console.log(room)
     // socket.broadcast.to(user.room).emit('message',generateMessage('Admin',`${user.username} has joined!`))
     socket.broadcast.to(user.room).emit('make_cursor_div',user.username)
+
+
+    // io.to(user.room).emit('message',generateMessage('Admin',`${user.username} has left`))
+    // socket.emit('make_cursor_overselves',user.username,getUsersInRoom(user.room))
     socket.emit('make_cursor_overselves',user.username,getUsersInRoom(user.room))
     io.to(user.room).emit('roomData',{
       room:user.room,
@@ -74,7 +98,7 @@ io.on('connection',(socket)=>{
     var config = {
     method: 'post',
     url: 'https://codexweb.netlify.app/.netlify/functions/enforceCode',
-    headers: { 
+    headers: {
     'Content-Type': 'application/json'
     },
     data : data
@@ -100,7 +124,7 @@ io.on('connection',(socket)=>{
     .catch(function (error) {
     console.log(error);
     });
-    
+
   })
   // // socket.emit('joined',(mess))
   // const link="https://www.google.com/maps?q="+mess[0]+","+mess[1]

@@ -33,7 +33,7 @@ function setCaretPosition(ctrl, pos) {
   if (ctrl.setSelectionRange) {
     ctrl.focus();
     ctrl.setSelectionRange(pos, pos);
-  
+
   // IE8 and below
   } else if (ctrl.createTextRange) {
     var range = ctrl.createTextRange();
@@ -73,7 +73,7 @@ const autoscroll=()=>{
     //   console.log("Bottom")
 
     //   console.log(containerHeight - newMessageHeight , scrollOffset)
-    // 
+    //
   }
 
 }
@@ -81,6 +81,13 @@ const autoscroll=()=>{
 
 // const $messageFormInput=document.querySelector('#box')
 // const $messageFormInput=$messageForm.querySelector('input')
+
+
+//
+// socket.emit('linkforvideo',room,()=>{
+//   // console.log('location was shared!')
+//   console.log("link for video is shared")
+// })
 
 
 socket.on('make_cursor_div',(username)=>{
@@ -93,7 +100,7 @@ socket.on('make_cursor_div',(username)=>{
   // html.id = username;
   $cursorDiv.insertAdjacentHTML('beforeend',html)
   const $cursorFormInput=document.querySelector('#c')
-  
+
   if ($cursorFormInput.querySelector('#changer').id){
     $cursorFormInput.querySelector('#changer').id=username
     // console.log("fs")
@@ -101,7 +108,7 @@ socket.on('make_cursor_div',(username)=>{
   else{
     // console.log("fsssss")
   }
-  
+
   // autoscroll()
 })
 
@@ -110,8 +117,8 @@ socket.on('make_cursor_overselves',(username,aa)=>{
 
   aa.forEach(user_name => {
     if (user_name.username != username) {
-      
-    
+
+
 
   var html = Mustache.render(cursorTemplate,{
     //this is done using a mustache library the {{dynamic}} part if changed to the second argument that is also message which is the above one consoleloggedone!
@@ -121,7 +128,7 @@ socket.on('make_cursor_overselves',(username,aa)=>{
   // html.id = username;
   $cursorDiv.insertAdjacentHTML('beforeend',html)
   const $cursorFormInput=document.querySelector('#c')
-  
+
   if ($cursorFormInput.querySelector('#changer').id){
     $cursorFormInput.querySelector('#changer').id=user_name.username
     // console.log("fs")
@@ -134,7 +141,7 @@ socket.on('make_cursor_overselves',(username,aa)=>{
 
 
 
-  
+
 
 })
 
@@ -222,7 +229,7 @@ socket.on('location-message',(message)=>{
 //   console.log("keypress")
 //   const addAt=document.getElementById("box").selectionStart
 //   const m= document.getElementById("box").value
-  
+
 //   // $messageFormButton.setAttribute('disabled','disabled')
 //   // console.log(e.key)
 //   var mess = [m.slice(0, addAt), e.key, m.slice(addAt)].join('');
@@ -239,7 +246,7 @@ socket.on('location-message',(message)=>{
 
 //   socket.emit('update',mess,(error)=>{
 //     // console.log("callback")
-    
+
 //     // console.log(document.getElementById("box").value)
 //     // $messageFormButton.removeAttribute('disabled')
 //     document.getElementById("box").setAttribute('value',mess);
@@ -281,25 +288,25 @@ document.querySelector('#box').addEventListener('keydown',(e)=>{
     console.log("a")
     addAt-=1
     setCaretPosition(document.getElementById("box"), addAt);
-    return 
+    return
   }else if(e.key=='ArrowRight'){
     console.log("b")
     addAt+=1
     setCaretPosition(document.getElementById("box"), addAt);
-    return 
+    return
   }
   else{
     if (e.key.length==1){
-    var mess = [m.slice(0, addAt), e.key, m.slice(addAt)].join(''); 
+    var mess = [m.slice(0, addAt), e.key, m.slice(addAt)].join('');
   }
   else{
-    return 
+    return
   }
   }
 
     socket.emit('update',mess,(error)=>{
       // console.log("callback")
-      
+
       // console.log(document.getElementById("box").value)
       // $messageFormButton.removeAttribute('disabled')
       document.getElementById("box").setAttribute('value',mess);
@@ -313,7 +320,7 @@ document.querySelector('#box').addEventListener('keydown',(e)=>{
       // console.log(document.getElementById("box").value)
       // console.log('your message was deliverd!')
     })
-  
+
 
   // console.log(document.getElementById("box").value)
 

@@ -2,6 +2,7 @@ const path = require('path')
 const express=require('express')
 const http= require('http')
 const socketio=require('socket.io')
+const bodyParser = require("body-parser");
 
 //http is required inorder to start socketio
 var axios = require('axios');
@@ -23,6 +24,8 @@ var cursorData = [];
 
 app.set('view engine', 'ejs')
 
+app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(express.static(publicDirectoryPath))
 
 app.get('/', (req, res) => {
@@ -30,10 +33,19 @@ app.get('/', (req, res) => {
 })
 
 
-app.get('/:room', (req, res) => {
+app.post('/', function(req, res){
+  console.log("hi1")
+  console.log(req.body)
+  var roomname=req.body.room;
+  var username=req.body.username;
+  res.render('chat', {roomname: roomname,username:username})
+});
+
+
+app.get('/room/:room', (req, res) => {
+  console.log("hi2")
   res.render('room', { roomId: req.params.room })
 })
-
 
 io.on('connection',(socket)=>{
   console.log('New web socket connection')

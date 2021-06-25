@@ -45,8 +45,7 @@ function setCaretPosition(ctrl, pos) {
 }
 
 
-const {username,room}=Qs.parse(location.search,{ignoreQueryPrefix:true})
-
+// const {username,room}=Qs.parse(location.search,{ignoreQueryPrefix:true})
 
 const autoscroll=()=>{
     const $newMessage=$messageDiv.lastElementChild

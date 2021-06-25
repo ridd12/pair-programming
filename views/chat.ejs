@@ -2,6 +2,13 @@
 <html lang="" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <!-- this scripts are for initially we are using query striing and then breaking the string to get our username and roomname
+    but then we also wanted a link for video call so we shifted to req.body and made this scripts tags as we wanted this
+    variables at client side -->
+    <script>
+      const username = "<%= username %>"
+      const room = "<%= roomname %>"
+    </script>
     <title>chat app</title>
     <link rel="icon" href="/img/favicon.png">
     <link rel="stylesheet" href="/css/styles.css">
@@ -19,6 +26,7 @@
         <textarea id="box" name="w3review" rows="30" cols="50"></textarea>
         <div class="compose">
           <button id="send-location" name="button">run:</button>
+          <a href="/room/<%= roomname %>" style="padding-left: 12px;">Click here to join group video chat</a>
           <!-- <form action="/practice.html">
             <button>practice:</button>
           </form> -->
@@ -47,7 +55,6 @@
     </script>
     <script id="sidebar-template" type="text/html">
         <!-- <input type="button" value="back" onclick="goBack()"> -->
-
         <h2 class="room-title">{{room}}</h2>
         <h3 class="list-title">Users:</h3>
         <ul class="users">
